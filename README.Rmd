@@ -9,43 +9,56 @@ output: github_document
 [![CRAN status](https://www.r-pkg.org/badges/version/EBArulebook)](https://cran.r-project.org/package=EBArulebook)
 <!-- badges: end -->
 
-The goal of EBArulebook is to scrape the [single rulebook](https://eba.europa.eu/regulation-and-policy/single-rulebook) and [Q&As](https://eba.europa.eu/single-rule-book-qa) published by the European Banking Authority (EBA).
+The goal of EBArulebook is to scrape the [single rulebook](https://eba.europa.eu/regulation-and-policy/single-rulebook) and [Q&As](https://eba.europa.eu/single-rule-book-qa) published by the European Banking Authority (EBA). This package was developed while working on a Staff Working Paper.
+
+If you use this package, then please cite it.
 
 ## Installation
 
-You can install the released version of EBArulebook from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("EBArulebook")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version of EBArulebook from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("erzk/EBArulebook")
 ```
-## Example
+## Examples
 
-This is a basic example which shows you how to solve a common problem:
+This packages makes it easy to obtain EBA data in a tabular form
 
-```{r example}
+```{r example, message = FALSE}
 library(EBArulebook)
 ```
 
+To get **EBA single rulebook** (tested only on Capital Requirements Regulation (*CRR*))
+
+```{r}
+all_eba_rules <- scrape_EBA()
+
+dplyr::glimpse(all_eba_rules)
+```
+
+To get **EBA single rulebook Q&As**
+
+```{r}
+qa_df <- scrape_EBA_QA()
+
+dplyr::glimpse(qa_df)
+```
+
+
 ## European Banking Authority - The Single Rulebook
 
-Code in this repository was used to acquire and analyse data used in the forthcoming Staff Working Paper. Check the vignette for more details.
+Code in this repository was used to acquire and analyse data used in the forthcoming Staff Working Paper.
+
+Check the [vignettes](https://github.com/erzk/EBArulebook/tree/master/vignettes) for more details and examples.
 
 ### Get the full website
-
-* Run on Ubuntu 16.04
 
 * Install [phantomjs](https://github.com/ariya/phantomjs)
 
 * Write a simple [scraper](https://www.thedataschool.co.uk/brian-scally/web-scraping-javascript-content/) `scrape_EBA.js`:
 
-This scraper was tested only on the Capital Requirements Regulation (CRR) but it should also work on other parts of the rulebook.
+This scraper was developed on Ubuntu 16.04. It was tested only on the Capital Requirements Regulation (CRR) but it should also work on other parts of the EBA rulebook.
 
 The EBA rulebook is displayed dynamically so the first step is to scrape the text using a headless browser (phantomjs).
 
@@ -79,9 +92,8 @@ This downloads the entire page which then needs to be cleaned.
 * Analyse the output `website_phantom.html`
 
 * Use `rvest` to extract key data
-- "span" css selector gets all
 
-The rulebook is also using simple html to display the rules and is constructed in a simple way:
+The rulebook is using html to display the rules and is constructed in a simple way:
 
 https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/article-id/2002
 
@@ -121,8 +133,8 @@ This will generate 9 html pages with max 200 Q&As. These scraped pages need to b
 
 ### Parsing
 
-Extract URL to the actual questions from the downloaded website using `parse_EBA_QA_page.R`
+Extract URL to the actual questions from the downloaded website using `parse_EBA_QA_page()`
 
 ### Scraping
 
-Scrape the actual Q&As into a tabular form with `scrape_EBA_QA.R`
+Scrape the actual Q&As into a tabular form with `scrape_EBA_QA()`
