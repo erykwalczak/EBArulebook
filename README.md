@@ -160,23 +160,21 @@ way:
 
 <https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/article-id/2002>
 
-where the last number after ‘/’ is an id.
+where the last number after ‘/’ is an ID.
 
-There are two solutions to this problem:
-
-1.  Brute force scrape all numbers until nothing is pulled
-2.  Extract the relevant numbers by running regex on the scraped html
-    file. Look for the IDs: “article-id/\[DIGIT\]”
-
-Here solution 2. was used. See `parse_EBA_page()`.
+To solve this problem I extracted the relevant IDs by running regex on
+the scraped html file. Look for the IDs: ‘article-id/\[DIGIT\]’. See
+`parse_EBA_page()` for details.
 
 ## Q\&As
 
 ### Scraper
 
 Search for questions. There are 1757 Q\&As (1652 Final and 105 Rejected)
-as of 8 June 2019. Max displayed per page is 200 (end of the URL) so 9
-pages in total (see: ‘cur=2’ in the URL)
+as of 8 June 2019. Status: use ‘All’: both ‘Final’ and ‘Rejected’.
+
+Maximum displayed Q\&As per page is 200 so 9 pages in total (see the
+final part the URL: ‘cur=2’).
 
 Use `scrape_EBA_QA.js` from the command line
 
@@ -184,15 +182,15 @@ Use `scrape_EBA_QA.js` from the command line
 phantomjs scrape_EBA.js
 ```
 
-Edit the .js file updating the pages to scrape:
+Edit the .js file updating pages to scrape:
 
-Page
-1:
+  - Page
+1
 
 <https://eba.europa.eu/single-rule-book-qa?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_keywords=&_questions_and_answers_WAR_questions_and_answersportlet_advancedSearch=false&_questions_and_answers_WAR_questions_and_answersportlet_andOperator=true&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fview.jsp&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=All&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_keyword=&_questions_and_answers_WAR_questions_and_answersportlet_articleSearch=&_questions_and_answers_WAR_questions_and_answersportlet_typeOfSubmitterSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicIdSearch=&_questions_and_answers_WAR_questions_and_answersportlet_startingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_endingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_applicableFromDate=&_questions_and_answers_WAR_questions_and_answersportlet_applicableUntilDate=&_questions_and_answers_WAR_questions_and_answersportlet_publicationFromDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicationToDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_currentTab=All&_questions_and_answers_WAR_questions_and_answersportlet_resetCur=false&_questions_and_answers_WAR_questions_and_answersportlet_delta=200>
 
-Status: use ‘All’: both ‘Final’ and
-‘Rejected’
+  - Page
+2
 
 <https://eba.europa.eu/single-rule-book-qa?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_delta=200&_questions_and_answers_WAR_questions_and_answersportlet_keywords=&_questions_and_answers_WAR_questions_and_answersportlet_advancedSearch=false&_questions_and_answers_WAR_questions_and_answersportlet_andOperator=true&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fview.jsp&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=All&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_keyword=&_questions_and_answers_WAR_questions_and_answersportlet_articleSearch=&_questions_and_answers_WAR_questions_and_answersportlet_typeOfSubmitterSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicIdSearch=&_questions_and_answers_WAR_questions_and_answersportlet_startingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_endingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_applicableFromDate=&_questions_and_answers_WAR_questions_and_answersportlet_applicableUntilDate=&_questions_and_answers_WAR_questions_and_answersportlet_publicationFromDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicationToDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_currentTab=All&_questions_and_answers_WAR_questions_and_answersportlet_resetCur=false&_questions_and_answers_WAR_questions_and_answersportlet_cur=2>
 
