@@ -1,0 +1,206 @@
+---
+title: "Introduction to the EBA rulebook"
+author: "Eryk Walczak"
+date: '`r Sys.Date()`'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(EBArulebook)
+```
+
+# EBA rulebook
+
+## Load and clean the rulebook
+
+```{r}
+articles_df <- parse_EBA_page()
+```
+
+Show the results
+
+```{r}
+dplyr::glimpse(articles_df)
+```
+
+## Get the content of the single rulebook
+
+Not working - dev
+
+```{r, eval = FALSE}
+######## DEVELOPMENT #######
+ruleITS <-
+  "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/811"
+ruleQA <-
+  "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/536"
+
+rule <- xml2::read_html(ruleITS)
+rule <- xml2::read_html(ruleQA)
+
+# columns
+a <- rule %>% html_nodes(".aui-w20") %>% html_text()
+b <- rule %>% html_nodes(".aui-w80") %>% html_text()
+
+c <- data.frame(Text = t(b))
+colnames(c) <- a
+
+# ITS
+its <- rule %>% html_nodes(".ITS") %>% html_text
+its_url <- rule %>%
+  html_nodes(".ITS") %>%
+  html_nodes("a") %>%
+  html_attr("href") %>%
+  paste0("https://eba.europa.eu", .) # TODO only add if blank
+its_regulatory_paper_url <- paste0(its_url, "-/regulatory-activity/consultation-paper")
+
+######################################
+
+#### TODO: other selectors
+## ITS + Q&A
+its_qa_url <- "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/3606"
+its_qa <- read_html(its_qa_url)
+# text
+its_qa %>% html_nodes(".ITSqa") %>% html_text()
+# urls
+its_qa %>% html_nodes(".ITSqa") %>% html_nodes("a") %>% html_attr("href")
+
+# RTS
+# e.g. "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/2420"
+".RTS"
+
+# RTS+QA
+# e.g. "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/1502"
+".RTSqa"
+
+# GL - guidelines. there is a Consultation Paper when following the href in .GL
+# e.g. "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/1682"
+".GL"
+
+# GL + Q&A / href
+# e.g. "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/951"
+".GLqa"
+
+# DA + QA
+# e.g. "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/1023"
+".DAqa"
+
+######################################
+
+# Q&A
+many_QAs_url <- "https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/2420"
+rule <- read_html(many_QAs_url)
+qa <- rule %>% html_nodes(".QandA") %>% html_text
+qa_url <- rule %>%
+  html_nodes(".QandA") %>%
+  html_nodes("a") %>%
+  html_attr("href") %>%
+  paste0("https://eba.europa.eu", .) # TODO only add if blank
+
+# Q&A content - use separate function. TODO: go through all QA URLs
+# this scraper below works only when direct QA link is available (i.e. 'qna/view/')
+# it will fail when more than 1 QA were submitted (e.g. 'qna/search')
+qa_url_content_html <- read_html(qa_url)
+qa_url_content_col1 <- qa_url_content_html %>% html_nodes(".aui-w25") %>% html_text
+qa_url_content_col2 <- qa_url_content_html %>% html_nodes(".aui-w75") %>% html_text
+
+# or scrape all Q&A - preferred option
+# use headless browser to go through:
+# "https://eba.europa.eu/single-rule-book-qa?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fview.jsp&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_emptySearch=0&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=1&currentTab=All"
+# then extract IDs > then get w25 and w75
+```
+
+## Get EBA rules
+
+Default option is to load previously scraped rulebook
+
+```{r}
+all_eba_rules <- scrape_EBA()
+```
+
+Which returns clean data frame with the content of the single rulebook. Additional column showing if additional tags are available (e.g. Q&A or Technical Standards).
+
+```{r}
+dplyr::glimpse(all_eba_rules)
+```
+
+When the files are not available locally, the rulebook can be scraped (all rules)
+
+```{r, eval = FALSE}
+all_eba_rules <- purrr::map_df(articles_df$URL, scrape_EBA)
+```
+
+To scrape single rule
+
+```{r, eval = FALSE}
+scrape_EBA("https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504/article-id/601")
+```
+
+# Q&A
+
+## Load parsed Q&As
+
+Go to each URL to scrape the content of each Q&A
+
+Use the javascript (phantomjs) scraper to pull dynamic pages which then get cleaned and scraped using rvest.
+
+Once Q&As are scraped with phantomjs (output files, i.e. html pages, are provided in the /data folder), they need to be parsed to extract URLs of each Q&A.
+
+```{r}
+qa_total <- parse_EBA_QA_page()
+```
+
+Show the data frame. It contains a title and corresponding URL of each Q&A.
+
+```{r}
+dplyr::glimpse(qa_total)
+```
+
+## Get Q&As
+
+The content of Q&As was saved locally to avoid scraping the EBA page each time
+
+```{r}
+qa_df <- scrape_EBA_QA()
+```
+
+This return a data frame with content of all Q&As
+
+```{r}
+dplyr::glimpse(qa_df)
+```
+
+Data frame contains all fields in contained in Q&As (see an [example](https://eba.europa.eu/single-rule-book-qa/-/qna/view/publicId/2019_4601)). Additionally, all hyperlinks available in the body (fields: **Question**, **Background** and **EBA answer**) were scraped and put into the **QA_links** column (e.g. [link](https://eba.europa.eu/regulation-and-policy/payment-services-and-electronic-money/regulatory-technical-standards-on-strong-customer-authentication-and-secure-communication-under-psd2) to **Commission Delegated Regulation (EU) 2018/389** in the given example).
+
+### Scraping
+
+To scrape single Q&A pass a URL ([qa_total$URL[1]](https://eba.europa.eu/single-rule-book-qa;jsessionid=34AB2726D35F823AAAF6534743340A6D?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fquestions%2Fviewquestion.jsp&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_questionId=2638504&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=1))
+
+```{r, eval = FALSE}
+scrape_EBA_QA(qa_total$URL[1])
+```
+
+To scrape all Q&As
+
+```{r, eval = FALSE}
+qa_df <- purrr::map_df(qa_total$URL, scrape_EBA_QA)
+```
+
+# Technical Standards
+
+## TODO turn into functions / remove Depends
+
+```{r}
+# TODO uncomment
+```
+
