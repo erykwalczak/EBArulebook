@@ -4,7 +4,10 @@
 #' @export
 #'
 #' @examples
-#' parse_EBA_QA_page()
+#' \dontrun{
+#' qa_total <- parse_EBA_QA_page()
+#' saveRDS(qa_total, here::here("data", "EBA_QA.Rds"))
+#' }
 parse_EBA_QA_page <- function() {
   # load the html
   eba_pages <- list.files(here::here("data"),
@@ -49,6 +52,3 @@ parse_EBA_QA_page <- function() {
   # return cleaned data frame
   return(qa_total)
 }
-
-# saveQAs
-#saveRDS(qa_total, here::here("data", "EBA_QA.Rds"))
