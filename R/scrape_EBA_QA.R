@@ -29,25 +29,25 @@ scrape_EBA_QA <- function(x) {
     # show progress
     cat(".")
     # scrape top page
-    rule <- x %>% read_html()
+    rule <- x %>% xml2::read_html()
 
     ### main content
     # left column
-    a <- rule %>% html_nodes(".aui-w25")
-    a_text <- a %>% html_text() %>% trimws() %>% sub(":$", "", .) %>% trimws()
+    a <- rule %>% rvest::html_nodes(".aui-w25")
+    a_text <- a %>% rvest::html_text() %>% trimws() %>% sub(":$", "", .) %>% trimws()
     # get the permanent link
-    a_perm_link <- rule %>% html_nodes(".aui-w75 > a") %>% html_attr("href")
+    a_perm_link <- rule %>% rvest::html_nodes(".aui-w75 > a") %>% rvest::html_attr("href")
     # links in the text body - tag 'p' covers rows 'Question', 'Background' and 'EBA answer'
     a_links <-
       rule %>%
-      html_nodes("p a") %>%
-      html_attr("href") %>%
+      rvest::html_nodes("p a") %>%
+      rvest::html_attr("href") %>%
       unlist() %>%
       paste(., collapse = " ") # turn into one vector separated by whitespace
 
     # right column
-    b <- rule %>% html_nodes(".aui-w75")
-    b_text <- b %>% html_text() %>% trimws()
+    b <- rule %>% rvest::html_nodes(".aui-w75")
+    b_text <- b %>% rvest::html_text() %>% trimws()
 
     qa_df <- data.frame(Text = t(b_text))
     colnames(qa_df) <- a_text

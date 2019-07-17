@@ -6,7 +6,7 @@
 #' @param x String. Optional URL of rules to scrape.
 #'
 #' @return Data frame with the content of EBA rulebook.
-#' Additional columns (QA to DA_QA) counts the number of occurrences of tags.
+#' Additional columns (QA to DA_QA) show the count of occurrences of tags.
 #' @export
 #'
 #' @examples
@@ -31,12 +31,12 @@ scrape_EBA <- function(x) {
     cat(".")
     # scrape top page - go through clean URLs
     # pull the main data from the EBA rulebook
-    rule <- x %>% read_html()
+    rule <- x %>% xml2::read_html()
 
     # main content
     # pull ".aui-w20" (type) and ".aui-w80" (text) columns
-    a <- rule %>% html_nodes(".aui-w20") %>% html_text()
-    b <- rule %>% html_nodes(".aui-w80") %>% html_text()
+    a <- rule %>% rvest::html_nodes(".aui-w20") %>% rvest::html_text()
+    b <- rule %>% rvest::html_nodes(".aui-w80") %>% rvest::html_text()
 
     rule_df <- data.frame(Text = t(b))
     colnames(rule_df) <- a
@@ -45,14 +45,14 @@ scrape_EBA <- function(x) {
     rule_df$Path <- gsub(" \\(Copy link to article\\)", "", rule_df$Path)
 
     # additional tags
-    qa <- rule %>% html_nodes(".QandA") %>% length()
-    its <- rule %>% html_nodes(".ITS") %>% length()
-    its_qa <- rule %>% html_nodes(".ITSqa") %>% length()
-    rts <- rule %>% html_nodes(".RTS") %>% length()
-    rts_qa <- rule %>% html_nodes(".RTSqa") %>% length()
-    gl <- rule %>% html_nodes(".GL") %>% length()
-    gl_qa <- rule %>% html_nodes(".GLqa") %>% length()
-    da_qa <- rule %>% html_nodes(".DAqa") %>% length()
+    qa <- rule %>% rvest::html_nodes(".QandA") %>% length()
+    its <- rule %>% rvest::html_nodes(".ITS") %>% length()
+    its_qa <- rule %>% rvest::html_nodes(".ITSqa") %>% length()
+    rts <- rule %>% rvest::html_nodes(".RTS") %>% length()
+    rts_qa <- rule %>% rvest::html_nodes(".RTSqa") %>% length()
+    gl <- rule %>% rvest::html_nodes(".GL") %>% length()
+    gl_qa <- rule %>% rvest::html_nodes(".GLqa") %>% length()
+    da_qa <- rule %>% rvest::html_nodes(".DAqa") %>% length()
 
     # append the data frame
     rule_df$URL = x
