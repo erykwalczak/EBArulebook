@@ -4,7 +4,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' parse_EBA_page()
+#' }
 parse_EBA_page <- function() {
   # load the html
   eba_page <- here::here("data", "website_phantom.html")
