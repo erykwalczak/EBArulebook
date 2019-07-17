@@ -21,3 +21,4 @@ Imports:
     stringr,
     xml2,
     purrr
+RoxygenNote: 6.1.1
