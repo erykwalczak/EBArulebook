@@ -16,8 +16,8 @@ parse_EBA_page <- function() {
   # create a DF
   articles_df <-
     data.frame(
-      Title = articles %>% html_text(),
-      URL = articles %>% html_attr("href"),
+      Title = articles %>% rvest::html_text(),
+      URL = articles %>% rvest::html_attr("href"),
       stringsAsFactors = FALSE)
 
   # trim
