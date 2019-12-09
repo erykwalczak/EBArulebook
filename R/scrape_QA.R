@@ -68,8 +68,12 @@ all_scraped_qa <-
 extract_qa_id <- function(x) {
   a <- gsub("^.*/publicId/", "", x)
   b <- gsub("\\?.*$", "", a)
-  c <- gsub("%20", "", b) # clean several messy entries
-  return(c)
+  # clean several messy entries
+  c <- gsub("%20", "", b)
+  # remove everything after '/'
+  # https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/627
+  d <- gsub("/.*$", "", c)
+  return(d)
 }
 
 all_scraped_qa$qa_id <-
@@ -82,3 +86,10 @@ all_scraped_qa$qa_id <-
     NA
   )
 
+# seprow
+library(tidyr)
+
+all_scraped_qa_seprow <-
+  separate_rows(all_scraped_qa,
+                qa_id,
+                sep = "-")
