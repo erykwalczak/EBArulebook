@@ -1,8 +1,8 @@
 Package: EBArulebook
-Title: What the Package Does (one line, title case)
+Title: European Banking Authority Single Rulebook
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Eryk", "Walczak", email = "erykjwalczak@gmail.com", role = c("aut", "cre"))
+Description: Scrape the EBA Single Rulebook and Q&As.
 Depends:
     R (>= 3.6.0),
     dplyr,
@@ -21,4 +21,4 @@ Imports:
     stringr,
     xml2,
     purrr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
