@@ -4,9 +4,10 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/EBArulebook)](https://cran.r-project.org/package=EBArulebook)
+
 <!-- badges: end -->
 
 `EBArulebook` is a package to scrape the [EBA Single
