@@ -9,13 +9,31 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 status](https://www.r-pkg.org/badges/version/EBArulebook)](https://cran.r-project.org/package=EBArulebook)
 <!-- badges: end -->
 
-The goal of EBArulebook is to scrape the [single
-rulebook](https://eba.europa.eu/regulation-and-policy/single-rulebook)
-and [Q\&As](https://eba.europa.eu/single-rule-book-qa) published by the
-European Banking Authority (EBA). This package was developed while
-working on a Staff Working Paper.
+`EBArulebook` is a package to scrape the [EBA Single
+Rulebook](https://www.eba.europa.eu/regulation-and-policy/single-rulebook/).
 
-If you use this package, then please cite it.
+The input to this package is the Single Rulebook website. Outputs from
+this package are the rules and
+[Q&As](https://www.eba.europa.eu/single-rule-book-qa) published on the
+Single Rulebook website in a format more amenable to text and network
+analysis.
+
+The goal of `EBArulebook` is to scrape the [Single
+Rulebook](https://eba.europa.eu/regulation-and-policy/single-rulebook)
+and [Q&As](https://eba.europa.eu/single-rule-book-qa) published by the
+European Banking Authority (EBA). This package was developed while
+working on a Staff Working Paper:
+
+**Amadxarif, Z., Brookes, J., Garbarino, N., Patel, R., Walczak, E.
+(2019) *[The Language of Rules: Textual Complexity in Banking
+Reforms.](https://www.bankofengland.co.uk/working-paper/2019/the-language-of-rules-textual-complexity-in-banking-reforms)*
+Staff Working Paper No. 834. Bank of England.**
+
+If you use this package, then please cite the paper.
+
+Any use of this package with the Single Rulebook must comply with the
+Single Rulebook’s [Terms of
+Use](https://www.eba.europa.eu/legal-notice).
 
 ## Installation
 
@@ -44,57 +62,13 @@ all_eba_rules <- scrape_EBA()
 dplyr::glimpse(all_eba_rules)
 ```
 
-    ## Observations: 530
-    ## Variables: 14
-    ## $ Path           <chr> "Capital Requirements Regulation > Recital", "Cap…
-    ## $ Title          <chr> "Recital", "Article 1", "Article 2", "Article 3",…
-    ## $ Description    <chr> "Recital", "Scope", "Supervisory powers", "Applic…
-    ## $ `Main content` <chr> " THE EUROPEAN PARLIAMENT AND THE COUNCIL OF THE …
-    ## $ Topics         <chr> "", "", "", "", "Own funds ; Other topics ; Large…
-    ## $ URL            <chr> "https://eba.europa.eu/regulation-and-policy/sing…
-    ## $ QA             <int> 0, 0, 0, 0, 9, 0, 1, 0, 2, 1, 0, 3, 0, 3, 0, 0, 0…
-    ## $ ITS            <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ ITS_QA         <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ RTS            <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ RTS_QA         <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ GL             <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ GL_QA          <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-    ## $ DA_QA          <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-
-To get **EBA single rulebook Q\&As**
+To get **EBA single rulebook Q&As**
 
 ``` r
 qa_df <- scrape_EBA_QA()
 
 dplyr::glimpse(qa_df)
 ```
-
-    ## Observations: 1,757
-    ## Variables: 24
-    ## $ `Question ID`                                    <chr> "2019_4601", "2…
-    ## $ `Legal act`                                      <chr> "Directive 2015…
-    ## $ Topic                                            <chr> "Strong custome…
-    ## $ Article                                          <chr> "46", "97", "97…
-    ## $ Paragraph                                        <chr> "a", "1", "", "…
-    ## $ Subparagraph                                     <chr> "", "", "", "c"…
-    ## $ `Article/Paragraph`                              <chr> "Article 36(1) …
-    ## $ `COM Delegated or Implementing Acts/RTS/ITS/GLs` <chr> "Regulation (EU…
-    ## $ `Name of institution / submitter`                <chr> "Reflow - Manis…
-    ## $ `Country of incorporation / residence`           <chr> "UK", "Germany"…
-    ## $ `Type of submitter`                              <chr> "Other", "Compe…
-    ## $ `Subject matter`                                 <chr> "ASPSP providin…
-    ## $ Question                                         <chr> "Are account se…
-    ## $ `Background on the question`                     <chr> "The purpose of…
-    ## $ `Date of submission`                             <chr> "11/03/2019", "…
-    ## $ `Published as Final Q&A`                         <chr> "07/06/2019", "…
-    ## $ `EBA answer`                                     <chr> "The submitter …
-    ## $ Status                                           <chr> "Final Q&A", "F…
-    ## $ `Permanent link`                                 <chr> "https://eba.eu…
-    ## $ ProvidedURL                                      <chr> "https://eba.eu…
-    ## $ QA_links                                         <chr> "https://eba.eu…
-    ## $ Attachments                                      <chr> NA, NA, NA, NA,…
-    ## $ `Published as Rejected Q&A`                      <chr> NA, NA, NA, NA,…
-    ## $ `Rationale for rejection`                        <chr> NA, NA, NA, NA,…
 
 ## European Banking Authority - The Single Rulebook
 
@@ -107,9 +81,9 @@ for more details and examples.
 
 ### Get the full website
 
-  - Install [phantomjs](https://github.com/ariya/phantomjs)
+-   Install [phantomjs](https://github.com/ariya/phantomjs)
 
-  - Write a simple
+-   Write a simple
     [scraper](https://www.thedataschool.co.uk/brian-scally/web-scraping-javascript-content/)
     `scrape_EBA.js`:
 
@@ -118,8 +92,7 @@ Capital Requirements Regulation (CRR) but it should also work on other
 parts of the EBA rulebook.
 
 The EBA rulebook is displayed dynamically so the first step is to scrape
-the text using a headless browser
-(phantomjs).
+the text using a headless browser (phantomjs).
 
 ``` r
 var url = 'https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/toc/504'; 
@@ -138,9 +111,7 @@ phantom.exit(); }, 2500);
 }
 ```
 
-  - Run the scraper from the command line with
-
-<!-- end list -->
+-   Run the scraper from the command line with
 
 ``` bash
 phantomjs scrape_EBA.js
@@ -150,13 +121,12 @@ This downloads the entire page which then needs to be cleaned.
 
 ### Parse downloaded html pages
 
-  - Analyse the output `website_phantom.html`
+-   Analyse the output `website_phantom.html`
 
-  - Use `rvest` to extract key data
+-   Use `rvest` to extract key data
 
 The rulebook is using html to display the rules and is constructed in a
-simple
-way:
+simple way:
 
 <https://eba.europa.eu/regulation-and-policy/single-rulebook/interactive-single-rulebook/-/interactive-single-rulebook/article-id/2002>
 
@@ -166,14 +136,14 @@ To solve this problem I extracted the relevant IDs by running regex on
 the scraped html file. Look for the IDs: ‘article-id/\[DIGIT\]’. See
 `parse_EBA_page()` for details.
 
-## Q\&As
+## Q&As
 
 ### Scraper
 
-Search for questions. There are 1757 Q\&As (1652 Final and 105 Rejected)
+Search for questions. There are 1757 Q&As (1652 Final and 105 Rejected)
 as of 8 June 2019. Status: use ‘All’: both ‘Final’ and ‘Rejected’.
 
-Maximum displayed Q\&As per page is 200 so 9 pages in total (see the
+Maximum displayed Q&As per page is 200 so 9 pages in total (see the
 final part the URL: ‘cur=2’).
 
 Use `scrape_EBA_QA.js` from the command line
@@ -184,17 +154,15 @@ phantomjs scrape_EBA.js
 
 Edit the .js file updating pages to scrape:
 
-  - Page
-1
+-   Page 1
 
 <https://eba.europa.eu/single-rule-book-qa?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_keywords=&_questions_and_answers_WAR_questions_and_answersportlet_advancedSearch=false&_questions_and_answers_WAR_questions_and_answersportlet_andOperator=true&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fview.jsp&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=All&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_keyword=&_questions_and_answers_WAR_questions_and_answersportlet_articleSearch=&_questions_and_answers_WAR_questions_and_answersportlet_typeOfSubmitterSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicIdSearch=&_questions_and_answers_WAR_questions_and_answersportlet_startingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_endingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_applicableFromDate=&_questions_and_answers_WAR_questions_and_answersportlet_applicableUntilDate=&_questions_and_answers_WAR_questions_and_answersportlet_publicationFromDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicationToDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_currentTab=All&_questions_and_answers_WAR_questions_and_answersportlet_resetCur=false&_questions_and_answers_WAR_questions_and_answersportlet_delta=200>
 
-  - Page
-2
+-   Page 2
 
 <https://eba.europa.eu/single-rule-book-qa?p_p_id=questions_and_answers_WAR_questions_and_answersportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=2&_questions_and_answers_WAR_questions_and_answersportlet_delta=200&_questions_and_answers_WAR_questions_and_answersportlet_keywords=&_questions_and_answers_WAR_questions_and_answersportlet_advancedSearch=false&_questions_and_answers_WAR_questions_and_answersportlet_andOperator=true&_questions_and_answers_WAR_questions_and_answersportlet_jspPage=%2Fhtml%2Fview.jsp&_questions_and_answers_WAR_questions_and_answersportlet_statusSearch=All&_questions_and_answers_WAR_questions_and_answersportlet_viewTab=1&_questions_and_answers_WAR_questions_and_answersportlet_keyword=&_questions_and_answers_WAR_questions_and_answersportlet_articleSearch=&_questions_and_answers_WAR_questions_and_answersportlet_typeOfSubmitterSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicIdSearch=&_questions_and_answers_WAR_questions_and_answersportlet_startingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_endingDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_applicableFromDate=&_questions_and_answers_WAR_questions_and_answersportlet_applicableUntilDate=&_questions_and_answers_WAR_questions_and_answersportlet_publicationFromDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_publicationToDateSearch=&_questions_and_answers_WAR_questions_and_answersportlet_currentTab=All&_questions_and_answers_WAR_questions_and_answersportlet_resetCur=false&_questions_and_answers_WAR_questions_and_answersportlet_cur=2>
 
-This will generate 9 html pages with max 200 Q\&As. These scraped pages
+This will generate 9 html pages with max `200` Q&As. These scraped pages
 need to be then processed.
 
 ### Parsing
@@ -204,4 +172,12 @@ Extract URL to the actual questions from the downloaded website using
 
 ### Scraping
 
-Scrape the actual Q\&As into a tabular form with `scrape_EBA_QA()`
+Scrape the actual Q&As into a tabular form with `scrape_EBA_QA()`
+
+### Disclaimer
+
+This package is an outcome of a research project. All errors are mine.
+All views expressed are personal views, not those of any employer. The
+package is provided as-is and is not updated. Data provided here was
+scraped in 2019 so obtaining the latest data might require running the
+scraper again.
